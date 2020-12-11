@@ -7,6 +7,7 @@ import {
   USER_SIGNIN_FAIL,
   USER_SIGNIN_REQUEST,
   USER_SIGNIN_SUCCESS,
+  USER_SIGN_OUT,
 } from "../reducerIdentifiers";
 
 const initialState = {
@@ -26,6 +27,8 @@ export default (state = initialState, { type, payload }) => {
     case USER_SIGNIN_FAIL:
     case USER_REGISTER_FAIL:
       return { ...state, loading: false, error: payload };
+    case USER_SIGN_OUT:
+      return { loading: false, userInfo: null, error: null };
     default:
       return state;
   }

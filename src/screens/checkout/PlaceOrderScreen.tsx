@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import CheckoutSteps from "../components/CheckoutSteps";
+import ClipLoader from "react-spinners/ClipLoader";
 
-import * as cartActions from "../store/actions/cartActions";
+import CheckoutSteps from "../../components/CheckoutSteps";
+import * as cartActions from "../../store/actions/cartActions";
 
 interface ParamTypes {
   id: string;
@@ -11,21 +12,14 @@ interface ParamTypes {
 
 const PlaceOrderScreen = (props) => {
   const dispatch = useDispatch();
-  const { cartItems, shipping, payment } = useSelector((state) => state.cart);
-
-  const checkoutHandler = () => {
-    props.history.push("/signin?redirect=shipping");
-  };
-
-  useEffect(() => {}, []);
-
-  if (!shipping) {
-    props.history.push("/shipping");
-  }
-
-  if (!payment) {
-    props.history.push("/payment");
-  }
+  const {
+    cartItems,
+    shipping,
+    payment,
+    orderInfo,
+    loading,
+    error,
+  } = useSelector((state) => state.cart);
 
   const itemsPrice = cartItems.reduce((acc, cur) => {
     return acc + cur.price * cur.qty;
@@ -34,9 +28,32 @@ const PlaceOrderScreen = (props) => {
   const taxPrice = 0.15 * itemsPrice;
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
 
-  const placeOrderHandler = (e) => {
-    e.preventDefault();
+  const placeOrderHandler = () => {
+    dispatch(
+      cartActions.placeOrder({
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      })
+    );
   };
+
+  useEffect(() => {
+    if (orderInfo && orderInfo._id) {
+      const orderId = orderInfo._id;
+      dispatch(cartActions.clearCart());
+      props.history.push(`/order_success/${orderId}`);
+    }
+  }, [orderInfo]);
+
+  if (!shipping) {
+    props.history.push("/shipping");
+  }
+
+  if (!payment) {
+    props.history.push("/payment");
+  }
 
   return (
     <div>
@@ -84,11 +101,22 @@ const PlaceOrderScreen = (props) => {
             <li>
               <button
                 className="button primary full-width"
-                onClick={placeOrderHandler}
+                onClick={() => placeOrderHandler()}
+                disabled={loading}
               >
                 Place Order
+                {loading && (
+                  <div className="loading-icon">
+                    <ClipLoader size={20} color="#fff" />
+                  </div>
+                )}
               </button>
             </li>
+            {error && (
+              <li>
+                <div className="text-danger">{error}</div>
+              </li>
+            )}
             <li>
               <h3>Order Summary</h3>
             </li>

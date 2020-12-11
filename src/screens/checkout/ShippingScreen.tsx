@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import CheckoutSteps from "../components/CheckoutSteps";
+import CheckoutSteps from "../../components/CheckoutSteps";
 
-import * as cartActions from "../store/actions/cartActions";
+import * as cartActions from "../../store/actions/cartActions";
 
 const ShippingScreen = (props) => {
   const dispatch = useDispatch();
@@ -78,7 +78,7 @@ const ShippingScreen = (props) => {
             </li>
 
             <li>
-              <button type="submit" className="button primary">
+              <button type="submit" className="button primary mt-3">
                 Continue
               </button>
             </li>

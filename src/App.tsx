@@ -1,19 +1,27 @@
-import { useSelector } from "react-redux";
+import { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Route, Link } from "react-router-dom";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 
 import "./App.css";
+import * as userActions from "./store/actions/userActions";
+
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
-import CartScreen from "./screens/CartScreen";
-import SigninScreen from "./screens/SigninScreen";
-import RegisterScreen from "./screens/RegisterScreen";
 import ProductsScreen from "./screens/ProductsScreen";
-import ShippingScreen from "./screens/ShippingScreen";
-import PaymentScreen from "./screens/PaymentScreen";
-import PlaceOrderScreen from "./screens/PlaceOrderScreen";
+import SigninScreen from "./screens/member/SigninScreen";
+import RegisterScreen from "./screens/member/RegisterScreen";
+import CartScreen from "./screens/checkout/CartScreen";
+import ShippingScreen from "./screens/checkout/ShippingScreen";
+import PaymentScreen from "./screens/checkout/PaymentScreen";
+import PlaceOrderScreen from "./screens/checkout/PlaceOrderScreen";
+import AccountScreen from "./screens/member/AccountScreen";
 
 function App() {
   const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const overlay = useRef(null);
 
   const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -23,20 +31,71 @@ function App() {
     document.querySelector(".sidebar").classList.remove("open");
   };
 
+  const popoverClick = (type: string) => {
+    switch (type) {
+      case "account":
+        break;
+      case "sign-out":
+        dispatch(userActions.signOut());
+        break;
+    }
+    document.body.click();
+  };
+
   return (
     <BrowserRouter>
       <div className="grid-container">
         <header className="header">
           <div className="brand">
             <button onClick={openMenu}>&#9776;</button>
-            <Link to="/">amazona</Link>
+            <Link to="/" className="ml-3">
+              amazonify: React Online Shopping
+            </Link>
           </div>
           <div className="header-links">
-            <a href="cart">Cart</a>
+            <Link to="/cart">
+              <FaShoppingCart className="topbar-icon" />
+              Cart
+            </Link>
+
             {userInfo ? (
-              <Link to="/signin">{userInfo.name}</Link>
+              <OverlayTrigger
+                placement="bottom"
+                trigger="click"
+                rootClose={true}
+                overlay={
+                  <Popover id="popover-positioned-bottom">
+                    <Popover.Content className="popover">
+                      <h5>Your Account</h5>
+                      <ul>
+                        <li>
+                          <Link
+                            to="/account"
+                            onClick={() => popoverClick("account")}
+                          >
+                            Account
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="#" onClick={() => popoverClick("sign-out")}>
+                            Sign Out
+                          </Link>
+                        </li>
+                      </ul>
+                    </Popover.Content>
+                  </Popover>
+                }
+              >
+                <Link to="#">
+                  <FaUser className="topbar-icon" />
+                  {userInfo.name}
+                </Link>
+              </OverlayTrigger>
             ) : (
-              <Link to="/signin">Signin</Link>
+              <Link to="/signin">
+                <FaUser className="topbar-icon" />
+                Signin
+              </Link>
             )}
           </div>
         </header>
@@ -58,12 +117,16 @@ function App() {
           <div className="content">
             <Route path="/signin" component={SigninScreen} />
             <Route path="/register" component={RegisterScreen} />
+            <Route path="/account" component={AccountScreen} />
+
             <Route path="/products" component={ProductsScreen} />
             <Route path="/product/:id" component={ProductScreen} />
+
             <Route path="/cart/:id?" component={CartScreen} />
             <Route path="/shipping" component={ShippingScreen} />
             <Route path="/payment" component={PaymentScreen} />
             <Route path="/placeorder" component={PlaceOrderScreen} />
+
             <Route path="/" exact={true} component={HomeScreen} />
           </div>
         </main>

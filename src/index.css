@@ -1,20 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 html {
+  font-family: "Roboto", sans-serif;
   font-size: 62.5%;
   box-sizing: border-box;
 }
 
 body {
-  font: 1.6rem Helvetica;
+  font-size: 1.6rem;
   height: 100vh;
   margin: 0;
 }
 
 button {
   font-size: 1.6rem;
+  font-weight: 500;
+}
+
+select {
+  margin: 0 1rem;
+  min-width: 6rem;
+  font-size: 1.8rem;
+}
+
+.loading-icon {
+  display: inline-block;
+  margin-left: 0.6rem;
+  transform: translate(0, 0.3rem);
 }
 
 .full-width {
   width: 100%;
+}
+
+.delete {
+  border: none;
+  background-color: white;
+  color: #007185;
+}
+.delete:hover {
+  text-decoration: underline;
 }
 
 #root {
@@ -22,10 +47,12 @@ button {
 }
 
 a {
+  color: #212529;
   text-decoration: none;
 }
 a:hover {
   color: #ff800f;
+  text-decoration: none;
 }
 
 .grid-container {
@@ -41,12 +68,16 @@ a:hover {
 
 .header {
   grid-area: header;
-  background-color: #203040;
+  background-color: #232f3e;
   color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
+}
+
+.brand {
+  margin-bottom: 1rem;
 }
 
 .brand a {
@@ -90,7 +121,7 @@ a:hover {
 .products li {
   list-style-type: none;
   flex: 0 1 34rem;
-  margin: 1rem;
+  margin: 1rem 0;
   padding: 0;
   height: 50rem;
   border-bottom: 0.1rem solid #c0c0c0;
@@ -101,11 +132,22 @@ a:hover {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  padding: 1.2rem;
 }
 
 .product-name {
   font-size: 2rem;
   font-weight: bold;
+}
+
+.product-name > a {
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+}
+
+.product-name > a:hover {
+  color: #ff800f;
 }
 
 .product-brand {
@@ -114,13 +156,14 @@ a:hover {
 }
 
 .product-price {
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-size: 2.2rem;
+  font-weight: 500;
 }
 
 .product-image {
-  max-width: 34rem;
-  max-height: 34rem;
+  width: 100%;
+  height: 34rem;
+  object-fit: cover;
 }
 
 .product-rating {
@@ -135,6 +178,11 @@ a:hover {
   border: none;
   color: #ffffff;
   cursor: pointer;
+}
+
+.topbar-icon {
+  font-size: 2rem;
+  margin: 0 0.6rem 0.3rem;
 }
 
 .sidebar {
@@ -170,11 +218,12 @@ a:hover {
   justify-content: space-between;
   align-items: start;
   flex-wrap: wrap;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 .details-image {
-  flex: 2 1 60rem;
+  flex: 2 1 40rem;
+  margin-bottom: 3rem;
 }
 
 .details-image img {
@@ -184,10 +233,13 @@ a:hover {
 
 .details-info {
   flex: 1 1 30rem;
+  margin-bottom: 3rem;
+  padding: 0 2rem;
 }
 
 .details-action {
   flex: 1 1 30rem;
+  margin-bottom: 3rem;
 }
 
 .details-info ul,
@@ -201,15 +253,25 @@ a:hover {
   margin-bottom: 1rem;
 }
 
+.details-info li h2 {
+  font-size: 2.5rem;
+  color: #666;
+}
+
+.details-info .price {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #b12704;
+}
+
 .back-to-result {
   padding: 1rem;
 }
 
 .details-action {
-  border: 0.1rem #808080 solid;
-  border-radius: 0.5rem;
-  background-color: #f8f8f8;
-  padding: 1rem;
+  border: 0.1rem #ccc solid;
+  border-radius: 1rem;
+  padding: 1.5rem;
 }
 
 .details-action ul li:last-child {
@@ -242,7 +304,7 @@ a:hover {
 .cart {
   display: flex;
   flex-wrap: wrap;
-  margin: 1rem;
+  margin: 1.5rem 1rem;
   align-items: flex-start;
 }
 
@@ -251,11 +313,11 @@ a:hover {
 }
 
 .cart-action {
-  flex: 1 1 20rem;
+  flex: 1 1 30rem;
   background-color: #f8f8f8;
   /* border: 0.1rem #808080 solid; */
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 3rem 2rem;
 }
 
 .cart-list-container {
@@ -267,13 +329,16 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
-  border-bottom: 0.1rem #808080 solid;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-right: 1rem;
+  border-bottom: 0.1rem #c8c8c8 solid;
 }
 
 .cart-list-container li img {
-  max-width: 10rem;
-  max-height: 10rem;
+  width: 16rem;
+  height: 16rem;
+  object-fit: contain;
 }
 
 .cart-list-container li:first-child {
@@ -286,11 +351,20 @@ a:hover {
   flex: 1 1;
 }
 .cart-name {
+  padding-left: 1rem;
   flex: 8 1;
+}
+.cart-name a {
+  font-weight: 600;
+  font-size: 1.8rem;
+  /* color: #007185; */
+  display: inline-block;
+  margin-bottom: 1rem;
 }
 .cart-price {
   flex: 1 1;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
+  font-weight: 700;
   text-align: right;
 }
 
@@ -357,7 +431,7 @@ tbody > tr:nth-child(odd) {
   display: flex;
   justify-content: space-between;
   width: 40rem;
-  margin: 1rem auto;
+  margin: 1rem auto 3rem;
 }
 
 .checkout-steps > div {
@@ -376,7 +450,7 @@ tbody > tr:nth-child(odd) {
 .placeorder {
   display: flex;
   flex-wrap: wrap;
-  padding: 1rem;
+  padding: 1.5rem;
   justify-content: space-between;
 }
 
@@ -397,7 +471,7 @@ tbody > tr:nth-child(odd) {
   border: 0.1rem #c0c0c0 solid;
   border-radius: 0.5rem;
   background-color: #fcfcfc;
-  padding: 0.5rem 2rem;
+  padding: 1.5rem 2rem;
   margin: 1rem;
 }
 
@@ -420,4 +494,78 @@ tbody > tr:nth-child(odd) {
   font-size: 2rem;
   font-weight: bold;
   color: #c04000;
+}
+
+/* Account Page */
+.account-page {
+  margin: 1rem;
+}
+
+.account-btn-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.account-btn {
+  width: 320px;
+  height: 9rem;
+  border: 1px #d0d0d0 solid;
+  border-radius: 0.8rem;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  display: flex;
+  cursor: pointer;
+}
+
+.account-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.account-btn-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.account-btn-left > svg {
+  transform: translate(-20%, 0);
+  font-size: 4rem;
+  fill: #666;
+}
+
+.account-btn-right {
+  flex: 3;
+}
+
+.account-btn-right > h4 {
+  font-size: 1.8rem;
+}
+
+.account-btn-right > div {
+  font-size: 1.4rem;
+  color: #666;
+}
+
+/* popover */
+.popover {
+  width: 20rem;
+  max-width: 20rem;
+  padding: 1.2rem 2rem;
+}
+.popover h5 {
+  font-size: 1.6rem;
+}
+
+.popover ul {
+  margin-top: 0.8rem;
+  list-style-type: none;
+  padding: 0;
+  font-size: 1.4rem;
+}
+
+.popover ul li {
+  margin: 0.2rem 0;
 }

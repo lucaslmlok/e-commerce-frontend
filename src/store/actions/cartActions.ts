@@ -3,9 +3,13 @@ import Cookie from "js-cookie";
 
 import {
   CART_ADD_ITEM,
+  CART_CLEAR,
   CART_REMOVE_ITEM,
   CART_SAVE_PAYMENT,
   CART_SAVE_SHIPPING,
+  PLACE_ORDER_FAIL,
+  PLACE_ORDER_REQUEST,
+  PLACE_ORDER_SUCCESS,
 } from "../reducerIdentifiers";
 
 export const addToCart = (productId: string, qty: number) => {
@@ -51,3 +55,33 @@ export const savePayment = (data) => ({
   type: CART_SAVE_PAYMENT,
   payload: data,
 });
+
+export const placeOrder = (price) => {
+  return async (dispatch, getState) => {
+    const { userInfo } = getState().user;
+    const { cartItems, shipping, payment } = getState().cart;
+    dispatch({ type: PLACE_ORDER_REQUEST });
+
+    try {
+      const { data } = await axios.post(
+        "/api/order",
+        { cartItems, shipping, payment, price },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: PLACE_ORDER_SUCCESS, payload: data.data });
+    } catch (err) {
+      dispatch({ type: PLACE_ORDER_FAIL, payload: err.message });
+    }
+  };
+};
+
+export const clearCart = () => {
+  Cookie.remove("cartItems");
+  return {
+    type: CART_CLEAR,
+  };
+};

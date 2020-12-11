@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
-import * as userActions from "../store/actions/userActions";
+import * as userActions from "../../store/actions/userActions";
 
 const SigninScreen = (props) => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const SigninScreen = (props) => {
               to={`/register${redirect && `?redirect=${redirect}`}`}
               className="button secondary text-center"
             >
-              Create your amazona account
+              Create your Amazonify account
             </Link>
           </li>
         </ul>

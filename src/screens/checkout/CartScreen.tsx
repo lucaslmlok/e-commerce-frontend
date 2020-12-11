@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import * as cartActions from "../store/actions/cartActions";
+import * as cartActions from "../../store/actions/cartActions";
 
 interface ParamTypes {
   id: string;
@@ -34,9 +34,9 @@ const CartScreen = (props) => {
     <div className="cart">
       <div className="cart-list">
         <ul className="cart-list-container">
-          <li>
-            <h3>Shopping Cart</h3>
-            <div>Price</div>
+          <li className="pb-2">
+            <h1>Shopping Cart</h1>
+            <h4>Price</h4>
           </li>
           {cartItems.length === 0 ? (
             <div>Cart is empty</div>
@@ -66,7 +66,7 @@ const CartScreen = (props) => {
                     </select>
                     <button
                       type="button"
-                      className="button"
+                      className="delete"
                       onClick={() => removeFormCartHandler(item.product)}
                     >
                       Delete
@@ -80,12 +80,14 @@ const CartScreen = (props) => {
         </ul>
       </div>
       <div className="cart-action">
-        <h3>
-          Subtotal ({cartItems.reduce((acc, cur) => acc + cur.qty, 0)} items) :
-          $ {cartItems.reduce((acc, cur) => acc + cur.price * cur.qty, 0)}
+        <h3 className="font-weight-normal">
+          Subtotal ({cartItems.reduce((acc, cur) => acc + cur.qty, 0)} items) :{" "}
+          <b>
+            $ {cartItems.reduce((acc, cur) => acc + cur.price * cur.qty, 0)}
+          </b>
         </h3>
         <button
-          className="button primary full-width"
+          className="button primary full-width mt-4"
           disabled={cartItems.length === 0}
           onClick={checkoutHandler}
         >

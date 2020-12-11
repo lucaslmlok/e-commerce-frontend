@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import CheckoutSteps from "../components/CheckoutSteps";
+import CheckoutSteps from "../../components/CheckoutSteps";
 
-import * as cartActions from "../store/actions/cartActions";
+import * as cartActions from "../../store/actions/cartActions";
 
 const PaymentScreen = (props) => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const PaymentScreen = (props) => {
   const query = new URLSearchParams(useLocation().search);
   const redirect = query.get("redirect");
 
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("paypal");
 
   const { shipping } = useSelector((state) => state.cart);
 
@@ -43,7 +43,9 @@ const PaymentScreen = (props) => {
                   value="paypal"
                   onChange={(e) => setPaymentMethod(e.target.value)}
                 />
-                <label htmlFor="paymentMethod">Payment Method</label>
+                <label htmlFor="paymentMethod" className="ml-3">
+                  Paypal
+                </label>
               </div>
             </li>
             <li>

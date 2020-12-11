@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, Link } from "react-router-dom";
+import { FaAngleLeft } from "react-icons/fa";
 
 import * as productActions from "../store/actions/productActions";
 
@@ -33,7 +34,10 @@ const ProductScreen = (props) => {
   return (
     <div className="">
       <div className="back-to-result">
-        <Link to="/">Back to result</Link>
+        <Link to="/">
+          <FaAngleLeft className="mb-1 mr-1" />
+          Back to result
+        </Link>
       </div>
       <div className="details">
         <div className="details-image">
@@ -42,13 +46,13 @@ const ProductScreen = (props) => {
         <div className="details-info">
           <ul>
             <li>
-              <h4>{product.name}</h4>
+              <h2>{product.name}</h2>
             </li>
             <li>
               {product.rating} Stars ({product.numReviews} Reviews)
             </li>
             <li>
-              Price: <b>${product.price}</b>
+              Price: <b className="price">${product.price}</b>
             </li>
             <li>
               <div>{product.desc}</div>
@@ -57,9 +61,9 @@ const ProductScreen = (props) => {
         </div>
         <div className="details-action">
           <ul>
-            <li>Price: ${product.price}</li>
             <li>
-              Status: {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+              Status:{" "}
+              <b>{product.countInStock > 0 ? "In Stock" : "Out of Stock"}</b>
             </li>
             {product.countInStock > 0 && (
               <>
@@ -74,7 +78,10 @@ const ProductScreen = (props) => {
                   </select>
                 </li>
                 <li>
-                  <button className="button primary" onClick={handleAddToCart}>
+                  <button
+                    className="button primary mt-3"
+                    onClick={handleAddToCart}
+                  >
                     Add to Cart
                   </button>
                 </li>

@@ -8,6 +8,7 @@ import {
   USER_SIGNIN_FAIL,
   USER_SIGNIN_REQUEST,
   USER_SIGNIN_SUCCESS,
+  USER_SIGN_OUT,
 } from "../reducerIdentifiers";
 
 export const signin = (email: string, password: string) => {
@@ -42,5 +43,12 @@ export const register = (name: string, email: string, password: string) => {
     } catch (err) {
       dispatch({ type: USER_REGISTER_FAIL, payload: err.message });
     }
+  };
+};
+
+export const signOut = () => {
+  Cookie.remove("userInfo");
+  return {
+    type: USER_SIGN_OUT,
   };
 };

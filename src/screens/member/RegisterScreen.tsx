@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
-import * as userActions from "../store/actions/userActions";
+import * as userActions from "../../store/actions/userActions";
 
 const RegisterScreen = (props) => {
   const dispatch = useDispatch();
