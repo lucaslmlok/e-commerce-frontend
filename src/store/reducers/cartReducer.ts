@@ -1,9 +1,16 @@
 import Cookie from "js-cookie";
 
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../reducerIdentifiers";
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_PAYMENT,
+  CART_SAVE_SHIPPING,
+} from "../reducerIdentifiers";
 
 const initialState = {
   cartItems: Cookie.getJSON("cartItems") || [],
+  shipping: null,
+  payment: null,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -26,6 +33,10 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         cartItems: state.cartItems.filter((item) => item.product !== payload),
       };
+    case CART_SAVE_SHIPPING:
+      return { ...state, shipping: payload };
+    case CART_SAVE_PAYMENT:
+      return { ...state, payment: payload };
     default:
       return state;
   }

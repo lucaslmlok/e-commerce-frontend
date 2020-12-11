@@ -1,7 +1,12 @@
 import axios from "axios";
 import Cookie from "js-cookie";
 
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../reducerIdentifiers";
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_PAYMENT,
+  CART_SAVE_SHIPPING,
+} from "../reducerIdentifiers";
 
 export const addToCart = (productId: string, qty: number) => {
   return async (dispatch, getState) => {
@@ -36,3 +41,13 @@ export const removeFormCart = (productId) => {
     Cookie.set("cartItems", JSON.stringify(cartItems));
   };
 };
+
+export const saveShipping = (data) => ({
+  type: CART_SAVE_SHIPPING,
+  payload: data,
+});
+
+export const savePayment = (data) => ({
+  type: CART_SAVE_PAYMENT,
+  payload: data,
+});
