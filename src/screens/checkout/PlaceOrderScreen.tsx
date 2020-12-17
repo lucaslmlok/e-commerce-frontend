@@ -63,8 +63,7 @@ const PlaceOrderScreen = (props) => {
           <div>
             <h3>Shipping</h3>
             <div>
-              {shipping.address}, {shipping.city}, {shipping.country},
-              {shipping.postalCode}
+              {`${shipping.address}, ${shipping.city}, ${shipping.country}, ${shipping.postalCode}`}
             </div>
           </div>
           <div>
@@ -86,8 +85,8 @@ const PlaceOrderScreen = (props) => {
                       <img src={item.image} alt={item.name} />
                     </div>
                     <div className="cart-name">
-                      <Link to={`/product/${item.product}`}>{item.name}</Link>
-                      <div>Qty:{item.qty}</div>
+                      <Link to="#">{item.name}</Link>
+                      <div>Qty: {item.qty}</div>
                     </div>
                     <div className="cart-price">${item.price}</div>
                   </li>

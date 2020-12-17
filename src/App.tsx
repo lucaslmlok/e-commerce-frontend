@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 
-import "./App.css";
 import * as userActions from "./store/actions/userActions";
 
 import HomeScreen from "./screens/HomeScreen";
@@ -17,6 +16,9 @@ import ShippingScreen from "./screens/checkout/ShippingScreen";
 import PaymentScreen from "./screens/checkout/PaymentScreen";
 import PlaceOrderScreen from "./screens/checkout/PlaceOrderScreen";
 import AccountScreen from "./screens/member/AccountScreen";
+import OrderSuccessScreen from "./screens/checkout/OrderSuccessScreen";
+import OrderScreen from "./screens/member/OrderScreen";
+import OrderDetailsScreen from "./screens/member/OrderDetailsScreen";
 
 function App() {
   const { userInfo } = useSelector((state) => state.user);
@@ -24,10 +26,12 @@ function App() {
   const overlay = useRef(null);
 
   const openMenu = () => {
+    return;
     document.querySelector(".sidebar").classList.add("open");
   };
 
   const closeMenu = () => {
+    return;
     document.querySelector(".sidebar").classList.remove("open");
   };
 
@@ -77,7 +81,7 @@ function App() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="#" onClick={() => popoverClick("sign-out")}>
+                          <Link to="/" onClick={() => popoverClick("sign-out")}>
                             Sign Out
                           </Link>
                         </li>
@@ -99,7 +103,7 @@ function App() {
             )}
           </div>
         </header>
-        <aside className="sidebar">
+        {/* <aside className="sidebar">
           <h3>Shopping Categories</h3>
           <button className="sidebar-close-btn" onClick={closeMenu}>
             x
@@ -112,12 +116,14 @@ function App() {
               <a href="#">Shirts</a>
             </li>
           </ul>
-        </aside>
-        <main className="main">
+        </aside> */}
+        <main className="main container">
           <div className="content">
             <Route path="/signin" component={SigninScreen} />
             <Route path="/register" component={RegisterScreen} />
             <Route path="/account" component={AccountScreen} />
+            <Route path="/orders" component={OrderScreen} />
+            <Route path="/order/:order_no" component={OrderDetailsScreen} />
 
             <Route path="/products" component={ProductsScreen} />
             <Route path="/product/:id" component={ProductScreen} />
@@ -126,6 +132,10 @@ function App() {
             <Route path="/shipping" component={ShippingScreen} />
             <Route path="/payment" component={PaymentScreen} />
             <Route path="/placeorder" component={PlaceOrderScreen} />
+            <Route
+              path="/order_success/:order_no?"
+              component={OrderSuccessScreen}
+            />
 
             <Route path="/" exact={true} component={HomeScreen} />
           </div>

@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
 
 import * as productActions from "../store/actions/productActions";
+import * as cartActions from "../store/actions/cartActions";
 
 interface ParamTypes {
   id: string;
@@ -16,7 +17,8 @@ const ProductScreen = (props) => {
   const [qty, setQty] = useState(1);
 
   const handleAddToCart = () => {
-    props.history.push(`/cart/${paramId}?qty=${qty}`);
+    dispatch(cartActions.addToCart(product._id, qty));
+    props.history.push("/cart");
   };
 
   useEffect(() => {

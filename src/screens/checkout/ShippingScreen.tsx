@@ -1,28 +1,46 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import CheckoutSteps from "../../components/CheckoutSteps";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 import * as cartActions from "../../store/actions/cartActions";
+import CheckoutSteps from "../../components/CheckoutSteps";
+import ErrorMsg from "../../components/ErrorMsg";
+
+const schema = yup.object().shape({
+  address: yup.string().required(),
+  city: yup.string().required(),
+  country: yup.string().required(),
+  postalCode: yup
+    .string()
+    .matches(/^\d+$/, "Postal Code must be a number")
+    .required(),
+});
 
 const ShippingScreen = (props) => {
   const dispatch = useDispatch();
 
-  const query = new URLSearchParams(useLocation().search);
-  const redirect = query.get("redirect");
-
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [postalCode, setPostalCode] = useState("");
+  const { register, handleSubmit, errors, setValue } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const { userInfo } = useSelector((state) => state.user);
+  const { shipping } = useSelector((state) => state.cart);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(cartActions.saveShipping({ address, city, country, postalCode }));
+  const onSubmit = (data) => {
+    dispatch(cartActions.saveShipping(data));
     props.history.push("payment");
   };
+
+  useEffect(() => {
+    if (shipping) {
+      setValue("address", shipping.address, { shouldValidate: true });
+      setValue("city", shipping.city, { shouldValidate: true });
+      setValue("country", shipping.country, { shouldValidate: true });
+      setValue("postalCode", shipping.postalCode, { shouldValidate: true });
+    }
+  }, [shipping]);
 
   if (!userInfo) {
     props.history.push("/cart");
@@ -32,7 +50,7 @@ const ShippingScreen = (props) => {
     <div>
       <CheckoutSteps currentStep={1} />
       <div className="form">
-        <form onSubmit={submitHandler}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ul className="form-container">
             <li>
               <h2>Shipping</h2>
@@ -43,8 +61,9 @@ const ShippingScreen = (props) => {
                 type="text"
                 name="address"
                 id="address"
-                onChange={(e) => setAddress(e.target.value)}
+                ref={register({ required: true })}
               />
+              <ErrorMsg msg={errors.address?.message} />
             </li>
 
             <li>
@@ -53,28 +72,31 @@ const ShippingScreen = (props) => {
                 type="text"
                 name="city"
                 id="city"
-                onChange={(e) => setCity(e.target.value)}
+                ref={register({ required: true })}
               />
+              <ErrorMsg msg={errors.city?.message} />
             </li>
 
             <li>
-              <label htmlFor="name">Country</label>
+              <label htmlFor="country">Country</label>
               <input
                 type="text"
                 name="country"
                 id="country"
-                onChange={(e) => setCountry(e.target.value)}
+                ref={register({ required: true })}
               />
+              <ErrorMsg msg={errors.country?.message} />
             </li>
 
             <li>
-              <label htmlFor="name">Postal Code</label>
+              <label htmlFor="postalCode">Postal Code</label>
               <input
-                type="number"
+                type="text"
                 name="postalCode"
                 id="postalCode"
-                onChange={(e) => setPostalCode(e.target.value)}
+                ref={register({ required: true })}
               />
+              <ErrorMsg msg={errors.postalCode?.message} />
             </li>
 
             <li>

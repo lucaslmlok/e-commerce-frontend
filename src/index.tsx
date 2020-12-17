@@ -1,12 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import dotenv from "dotenv";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import App from "./App";
 import store from "./store/store";
 import reportWebVitals from "./reportWebVitals";
+
+dotenv.config();
+export const API_ROOT = process.env.REACT_APP_API_ROOT;
 
 ReactDOM.render(
   <React.StrictMode>

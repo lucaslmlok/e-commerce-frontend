@@ -14,16 +14,17 @@ import {
   PRODUCT_SAVE_REQUEST,
   PRODUCT_SAVE_SUCCESS,
 } from "../reducerIdentifiers";
+import { API_ROOT } from "../..";
 
 export const listProduct = () => {
   return async (dispatch) => {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
     try {
-      const { data } = await axios.get("/api/products");
+      const { data } = await axios.get(`${API_ROOT}/api/products`);
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (err) {
-      dispatch({ type: PRODUCT_LIST_FAIL, payload: err.message });
+      dispatch({ type: PRODUCT_LIST_FAIL, payload: err.response.data.msg });
     }
   };
 };
@@ -33,7 +34,7 @@ export const detailsProduct = (productId: string) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
 
     try {
-      const { data } = await axios.get(`/api/products/${productId}`);
+      const { data } = await axios.get(`${API_ROOT}/api/products/${productId}`);
       dispatch({
         type: PRODUCT_DETAILS_SUCCESS,
         payload: data,
@@ -41,7 +42,7 @@ export const detailsProduct = (productId: string) => {
     } catch (err) {
       dispatch({
         type: PRODUCT_DETAILS_FAIL,
-        payload: err.message,
+        payload: err.response.data.msg,
       });
     }
   };
@@ -55,7 +56,7 @@ export const saveProduct = (product) => {
     try {
       if (product._id) {
         const { data } = await axios.put(
-          `/api/products/${product._id}`,
+          `${API_ROOT}/api/products/${product._id}`,
           product,
           {
             headers: {
@@ -65,7 +66,7 @@ export const saveProduct = (product) => {
         );
         dispatch({ type: PRODUCT_SAVE_SUCCESS, payload: data });
       } else {
-        const { data } = await axios.post("/api/products", product, {
+        const { data } = await axios.post(`${API_ROOT}/api/products`, product, {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
           },
@@ -73,7 +74,7 @@ export const saveProduct = (product) => {
         dispatch({ type: PRODUCT_SAVE_SUCCESS, payload: data });
       }
     } catch (err) {
-      dispatch({ type: PRODUCT_SAVE_FAIL, payload: err.message });
+      dispatch({ type: PRODUCT_SAVE_FAIL, payload: err.response.data.msg });
     }
   };
 };
@@ -84,14 +85,17 @@ export const deleteProduct = (productId: string) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
     try {
-      const { data } = await axios.delete(`/api/products/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      });
+      const { data } = await axios.delete(
+        `${API_ROOT}/api/products/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
       dispatch({ type: PRODUCT_DELETE_SUCCESS, payload: data });
     } catch (err) {
-      dispatch({ type: PRODUCT_DELETE_FAIL, payload: err.message });
+      dispatch({ type: PRODUCT_DELETE_FAIL, payload: err.response.data.msg });
     }
   };
 };

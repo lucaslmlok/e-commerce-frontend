@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookie from "js-cookie";
+import { API_ROOT } from "../..";
 
 import {
   CART_ADD_ITEM,
@@ -15,7 +16,7 @@ import {
 export const addToCart = (productId: string, qty: number) => {
   return async (dispatch, getState) => {
     try {
-      const { data } = await axios.get(`/api/products/${productId}`);
+      const { data } = await axios.get(`${API_ROOT}/api/products/${productId}`);
       dispatch({
         type: CART_ADD_ITEM,
         payload: {
@@ -64,7 +65,7 @@ export const placeOrder = (price) => {
 
     try {
       const { data } = await axios.post(
-        "/api/order",
+        `${API_ROOT}/api/order`,
         { cartItems, shipping, payment, price },
         {
           headers: {
@@ -74,7 +75,7 @@ export const placeOrder = (price) => {
       );
       dispatch({ type: PLACE_ORDER_SUCCESS, payload: data.data });
     } catch (err) {
-      dispatch({ type: PLACE_ORDER_FAIL, payload: err.message });
+      dispatch({ type: PLACE_ORDER_FAIL, payload: err.response.data.msg });
     }
   };
 };

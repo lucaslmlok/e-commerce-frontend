@@ -10,20 +10,21 @@ import {
   USER_SIGNIN_SUCCESS,
   USER_SIGN_OUT,
 } from "../reducerIdentifiers";
+import { API_ROOT } from "../..";
 
 export const signin = (email: string, password: string) => {
   return async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST });
 
     try {
-      const { data } = await axios.post("/api/users/signin", {
+      const { data } = await axios.post(`${API_ROOT}/api/users/signin`, {
         email,
         password,
       });
       dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
       Cookie.set("userInfo", JSON.stringify(data));
     } catch (err) {
-      dispatch({ type: USER_SIGNIN_FAIL, payload: err.message });
+      dispatch({ type: USER_SIGNIN_FAIL, payload: err.response.data.msg });
     }
   };
 };
@@ -33,7 +34,7 @@ export const register = (name: string, email: string, password: string) => {
     dispatch({ type: USER_REGISTER_REQUEST });
 
     try {
-      const { data } = await axios.post("/api/users/register", {
+      const { data } = await axios.post(`${API_ROOT}/api/users/register`, {
         name,
         email,
         password,
@@ -41,7 +42,7 @@ export const register = (name: string, email: string, password: string) => {
       dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
       Cookie.set("userInfo", JSON.stringify(data));
     } catch (err) {
-      dispatch({ type: USER_REGISTER_FAIL, payload: err.message });
+      dispatch({ type: USER_REGISTER_FAIL, payload: err.response.data.msg });
     }
   };
 };
